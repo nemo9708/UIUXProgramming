@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신선한 냉장고 | 혼족을 위한 식재료 관리</title>
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- 
@@ -64,12 +66,14 @@
         </section>
 
         <!-- 4. 최소 입력 폼 영역 -->
-        <section id="subscribe">
+        <section id="subscribe" class="content-section subscribe-section">
             <h2>식재료 관리 소식 및 알림 받기</h2>
-            <form>
-                <label for="email">이메일 주소</label>
-                <input type="email" id="email" name="email" placeholder="example@email.com">
-                <button type="submit">유통기한 알림 신청하기</button>
+            <form class="subscribe-form">
+                <label class="email-field" for="email">
+                    이메일 주소
+                    <input type="email" id="email" name="email" placeholder="example@email.com">
+                </label>
+                <button class="primary-button" type="submit">유통기한 알림 신청하기</button>
             </form>
         </section>
     </main>
