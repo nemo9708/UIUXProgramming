@@ -65,21 +65,26 @@
             </ol>
         </section>
 
-        <!-- 4. 최소 입력 폼 영역 -->
-        <section id="subscribe" class="content-section subscribe-section">
+        <!-- index.html의 소식 받기 섹션 (#subscribe) 수정 -->
+        <section id="subscribe">
             <h2>식재료 관리 소식 및 알림 받기</h2>
-            <form class="subscribe-form">
-                <label class="email-field" for="email">
-                    이메일 주소
-                    <input type="email" id="email" name="email" placeholder="example@email.com">
-                </label>
-                <button class="primary-button" type="submit">유통기한 알림 신청하기</button>
-            </form>
-        </section>
-    </main>
 
-    <footer>
-        <p>© 2026 신선한 냉장고. All rights reserved.</p>
-    </footer>
+            <!-- 1) form 태그에 id="subscribe-form" 추가 -->
+            <form id="subscribe-form">
+                <label for="email">이메일 주소</label>
+
+                <!-- 2) input 태그 id="email" 확인 -->
+                <input type="email" id="email" name="email" placeholder="example@email.com">
+
+                <!-- 3) button 태그에 id="subscribeButton" 추가 -->
+                <button type="submit" id="subscribeButton">유통기한 알림 신청하기</button>
+            </form>
+
+            <!-- 4) 신청 처리 결과를 보여줄 안내 문구 요소 추가 -->
+            <p id="subscribeMessage" aria-live="polite">이메일을 입력한 뒤 신청해 주세요.</p>
+        </section>
+
+        <!-- 5) body 태그가 닫히기 직전에 script.js 연결 -->
+        <script src="script.js"></script>
 </body>
 </html>
