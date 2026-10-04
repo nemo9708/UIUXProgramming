@@ -1,6 +1,6 @@
-/* 1. 모든 요소 크기 계산 기준 통일 및 공통 초기화 */
+/* 1. 전체 요소 계산 기준 및 기본 스타일 */
 * {
-    box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+    box-sizing: border-box;
 }
 
 body {
@@ -8,14 +8,18 @@ body {
     color: #292a31;
     font-family: "Noto Sans KR", sans-serif;
     line-height: 1.6;
-    background-color: #f6f6fb; /* 기본 배경색 지정 */
+    background-color: #f6f6fb;
 }
 
-/* 2. 전체 페이지 최대 너비 및 중앙 정렬 */
-header, main, footer {
-    max-width: 1100px;
+/* 2. 유동 너비 및 최대 너비 설정 (화면에 맞춰 줄어듦) */
+header,
+main,
+footer {
+    width: 100%; /* 좁은 화면에서 100% 적용 */
+    max-width: 1100px; /* 넓은 화면에서 최대 1100px 제한 */
     margin: 0 auto;
-    padding: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 header {
@@ -23,7 +27,7 @@ header {
     padding-bottom: 32px;
 }
 
-/* 3. 내비게이션 메뉴 가로 정렬 (Flexbox) */
+/* 3. 내비게이션 메뉴 (데스크톱 기본: 가로 배치) */
 nav {
     display: flex;
     gap: 16px;
@@ -49,7 +53,7 @@ nav a:focus {
     outline-offset: 2px;
 }
 
-/* 4. 제목 및 본문 타이포그래피 (시각적 위계) */
+/* 4. 제목 및 문단 */
 h1 {
     margin: 0 0 12px;
     font-size: 40px;
@@ -60,7 +64,7 @@ h1 {
 h2 {
     margin: 0 0 20px;
     font-size: 28px;
-    color: #5b50c8; /* 주요 영역 대표 색상 */
+    color: #5b50c8;
 }
 
 h3 {
@@ -73,7 +77,7 @@ p {
     color: #5e6272;
 }
 
-/* 5. 섹션 카드 박스 모델 정돈 */
+/* 5. 섹션 카드 */
 section {
     margin-bottom: 32px;
     padding: 36px;
@@ -82,24 +86,24 @@ section {
     background-color: #ffffff;
 }
 
-/* 6. 주요 기능 카드를 가로로 배치 (Flexbox) */
+/* 6. 기능 카드 목록: CSS Grid 적용 */
 #features ul {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* 자동 열 계산 */
     gap: 20px;
     margin: 0;
     padding: 0;
-    list-style: none; /* 기본 점 기호 제거 */
+    list-style: none;
 }
 
 #features li {
-    flex: 1; /* 3개 카드가 동일한 폭 분할 */
+    min-width: 0;
     padding: 24px;
     border: 1px solid #d7d4f6;
     border-radius: 12px;
     background-color: #f4f3ff;
 }
 
-/* 7. 이용 방법 순서 목록 여백 정리 */
 #steps ol {
     margin: 0;
     padding-left: 24px;
@@ -109,8 +113,9 @@ section {
     margin-top: 12px;
 }
 
-/* 8. 이미지 모서리 둥글게 및 크기 제어 */
+/* 7. 반응형 이미지 (화면 너비에 맞춰 줄어듦) */
 img {
+    width: 100%;
     max-width: 100%;
     height: auto;
     border-radius: 12px;
@@ -118,7 +123,7 @@ img {
     margin-top: 16px;
 }
 
-/* 9. 입력 폼 및 버튼 스타일 (조작 피드백) */
+/* 8. 입력 폼 및 버튼 (데스크톱 기본: 한 줄 배치) */
 form {
     display: flex;
     align-items: flex-end;
@@ -140,7 +145,7 @@ input[type="email"] {
     border: 1px solid #bfc1d1;
     border-radius: 8px;
     font: inherit;
-    transition: border-color 0.2s ease, outline-color 0.2s ease;
+    transition: border-color 0.2s ease;
 }
 
 input[type="email"]:focus {
@@ -171,12 +176,70 @@ button[type="submit"]:focus {
 }
 
 button[type="submit"]:active {
-    transform: translateY(1px); /* 클릭 시 눌림 효과 */
+    transform: translateY(1px);
 }
 
-/* 10. 하단 영역 (Footer) */
+/* 9. 하단 영역 (Footer) */
 footer {
     padding: 24px 0 48px;
     color: #8a8d9b;
     font-size: 14px;
+}
+
+/* 모바일 반응형 미디어 쿼리 (768px 이하) */
+@media (max-width: 768px) {
+    /* 모바일 글자 크기 및 세로 여백 축소 */
+    body {
+        font-size: 16px;
+    }
+
+    header {
+        padding-top: 32px;
+        padding-bottom: 24px;
+    }
+
+    section {
+        margin-top: 24px;
+        padding: 24px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    /* 1) 내비게이션 세로 배치 */
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    nav a {
+        padding: 10px 12px;
+        background-color: #f0efff;
+    }
+
+    /* 2) 기능 카드를 모바일 1열 고정 */
+    #features ul {
+        grid-template-columns: 1fr;
+    }
+
+    /* 3) 이메일 입력창과 버튼을 세로 배치 */
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input[type="email"],
+    button[type="submit"] {
+        width: 100%;
+    }
+
+    button[type="submit"] {
+        min-height: 48px; /* 손가락 조작이 용이한 최소 높이 */
+    }
 }
