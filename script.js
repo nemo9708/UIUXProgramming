@@ -1,49 +1,100 @@
-// 1. 서비스 정보 및 상태 변수 선언 (고정값 const, 변하는 값 let)
-const serviceName = "신선한 냉장고";
-let isSubscribed = false;
-let submitCount = 0;
+// ==========================================
+// 6주차 JavaScript 이벤트 & 동적 UI 구현
+// ==========================================
 
-// 2. DOM 요소 선택 (HTML의 id로 요소 가져오기)
-const subscribeForm = document.querySelector("#subscribe-form");
-const emailInput = document.querySelector("#email");
-const subscribeButton = document.querySelector("#subscribeButton");
-const subscribeMessage = document.querySelector("#subscribeMessage");
+// --- 1. DOM 요소 선택 ---
+const themeButton = document.querySelector("#themeButton");
+const foodNameInput = document.querySelector("#foodName");
+const foodNameCount = document.querySelector("#foodNameCount");
+const agreeCheck = document.querySelector("#agreeCheck");
+const agreeMessage = document.querySelector("#agreeMessage");
+const startAlarmBtn = document.querySelector("#startAlarmBtn");
 
-// 3. 안내 문구 생성 함수 (상태에 따라 문구 반환)
-function makeSubscribeMessage(email, subscribed) {
-    if (subscribed) {
-        return `${email}님, '${serviceName}' 유통기한 알림 신청이 완료되었습니다!`;
-    }
-    return "이메일을 입력한 뒤 신청해 주세요.";
+// 탭 버튼 및 패널 목록
+const tabs = document.querySelectorAll(".tab");
+const panels = document.querySelectorAll(".panel");
+
+// --- 2. click 이벤트 (다크 테마 토글 + 버튼 문구 변경) ---
+function handleThemeClick() {
+    // 1) body 클래스 'dark' 토글 (스타일 변화)
+    const isDark = document.body.classList.toggle("dark");
+    // 2) 버튼 텍스트 변경 (문구 변화)
+    themeButton.textContent = isDark ? "라이트 테마로 바꾸기" : "다크 테마로 바꾸기";
 }
 
-// 4. 폼 제출(submit) 처리 함수
-function handleSubscribe(event) {
-    // 폼 제출 시 페이지가 새로고침되는 기본 동작 방지
-    event.preventDefault();
+themeButton.addEventListener("click", handleThemeClick);
 
-    // 입력값 가져오기 (앞뒤 공백 제거)
-    const subscriberEmail = emailInput.value.trim();
-
-    // [예외 처리] 이메일이 입력되지 않은 경우
-    if (subscriberEmail === "") {
-        subscribeMessage.textContent = "이메일을 입력한 뒤 신청해 주세요.";
-        emailInput.focus(); // 입력창으로 커서 이동
-        return; // 함수 종료
-    }
-
-    // [성공 처리] 이메일이 올바르게 입력된 경우
-    isSubscribed = true;
-    submitCount += 1;
-
-    // 완료 문구 변경 및 성공 스타일(.is-success) 추가
-    subscribeMessage.textContent = makeSubscribeMessage(subscriberEmail, isSubscribed);
-    subscribeMessage.classList.add("is-success");
-
-    // 버튼 문구 변경 및 비활성화 (중복 제출 방지)
-    subscribeButton.textContent = "신청 완료";
-    subscribeButton.disabled = true;
+// --- 3. input 이벤트 (식재료 이름 입력 시 실시간 글자수 계산) ---
+function handleFoodNameInput() {
+    const maxLen = 10;
+    const currentLen = Math.min(foodNameInput.value.length, maxLen);
+    // 실시간 글자 수 문구 갱신
+    foodNameCount.textContent = `${currentLen} / ${maxLen} 자`;
 }
 
-// 5. 폼 제출 이벤트와 처리 함수 연결
-subscribeForm.addEventListener("submit", handleSubscribe);
+foodNameInput.addEventListener("input", handleFoodNameInput);
+
+// --- 4. change 이벤트 (체크 여부에 따라 버튼 상태, 안내 문구, 스타일 동시 변경) ---
+function handleAgreeChange() {
+    const isChecked = agreeCheck.checked;
+
+    // (1) 버튼 상태 변경: disabled 토글
+    startAlarmBtn.disabled = !isChecked;
+
+    // (2) 화면 문구 변경
+    agreeMessage.textContent = isChecked
+        ? "유통기한 알림 서비스 이용 준비가 완료되었습니다."
+        : "동의 후 알림 서비스를 이용할 수 있습니다.";
+
+    // (3) 스타일 변경: 클래스 토글을 통한 색상 및 굵기 제어
+    if (isChecked) {
+        agreeMessage.classList.add("is-ready");
+    } else {
+        agreeMessage.classList.remove("is-ready");
+    }
+}
+
+agreeCheck.addEventListener("change", handleAgreeChange);
+
+// --- 5. 탭 UI 전환 기능 (querySelectorAll + forEach) ---
+
+// 모든 탭과 패널의 활성화 상태 초기화
+function resetTabsAndPanels() {
+    tabs.forEach(function (tab) {
+        tab.classList.remove("is-active");
+        tab.setAttribute("aria-selected", "false");
+    });
+
+    panels.forEach(function (panel) {
+        panel.classList.remove("is-active");
+        panel.hidden = true; // 화면 숨김
+    });
+}
+
+// 클릭된 탭과 연결된 패널 활성화
+function activateTab(clickedTab) {
+    // data-target 속성값 읽기 (예: "#panel-expire")
+    const targetSelector = clickedTab.dataset.target;
+    const targetPanel = document.querySelector(targetSelector);
+
+    // 탭 활성화
+    clickedTab.classList.add("is-active");
+    clickedTab.setAttribute("aria-selected", "true");
+
+    // 패널 활성화
+    if (targetPanel) {
+        targetPanel.classList.add("is-active");
+        targetPanel.hidden = false;
+    }
+}
+
+// 탭 클릭 이벤트 핸들러
+function handleTabClick(event) {
+    resetTabsAndPanels();
+    activateTab(event.currentTarget);
+}
+
+// 모든 탭 버튼에 click 이벤트 리스너 등록
+tabs.forEach(function (tab) {
+    tab.addEventListener("click", handleTabClick);
+});
