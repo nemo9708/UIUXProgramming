@@ -622,3 +622,242 @@ body.dark .status-message.is-ready {
         width: 100%;
     }
 }
+
+/* ==========================================
+   중간고사 신규 기능: 실시간 현황판 & D-Day 스타일
+   ========================================== */
+/* 실시간 통계 바 */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background-color: #f7f6fb;
+  border: 1px solid #deddea;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 13px;
+  color: #5e6272;
+  margin-bottom: 4px;
+}
+
+.stat-card strong {
+  font-size: 22px;
+  color: #292a31;
+}
+
+.stat-card.danger strong {
+  color: #d32f2f;
+}
+
+.stat-card.success strong {
+  color: #245c3a;
+}
+
+/* 검색 및 필터 컨트롤 */
+.filter-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-box {
+  flex: 2;
+}
+
+.select-box {
+  flex: 1;
+}
+
+.search-box input,
+.select-box select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #bfc1d1;
+  border-radius: 8px;
+  font: inherit;
+}
+
+/* 상태 탭 */
+.dash-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.dash-tab {
+  padding: 8px 16px;
+  border: 1px solid #deddea;
+  background-color: #ffffff;
+  border-radius: 20px;
+  font-weight: 700;
+  color: #5e6272;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dash-tab.is-active {
+  background-color: #5b50c8;
+  color: #ffffff;
+  border-color: #5b50c8;
+}
+
+/* 식재료 카드 그리드 */
+.food-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.food-item-card {
+  background-color: #ffffff;
+  border: 1px solid #deddea;
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.food-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.food-card-title {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 700;
+}
+
+/* D-Day 태그 */
+.dday-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dday-badge.danger {
+  background-color: #fde8e8;
+  color: #d32f2f;
+}
+
+.dday-badge.warning {
+  background-color: #fff4e5;
+  color: #b76e00;
+}
+
+.dday-badge.safe {
+  background-color: #e7f7ed;
+  color: #245c3a;
+}
+
+.dday-badge.done {
+  background-color: #e0e1ec;
+  color: #717585;
+}
+
+.food-card-body p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* 소비 완료 상태 피드백 */
+.food-item-card.is-consumed {
+  background-color: #f7f6fb;
+  opacity: 0.75;
+}
+
+.food-item-card.is-consumed .food-card-title {
+  text-decoration: line-through;
+  color: #8a8d9b;
+}
+
+/* 카드 조작 버튼 */
+.btn-consume-toggle {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px solid #5b50c8;
+  background-color: #ffffff;
+  color: #5b50c8;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+
+.food-item-card.is-consumed .btn-consume-toggle {
+  background-color: #e0e1ec;
+  border-color: #bfc1d1;
+  color: #5e6272;
+}
+
+/* 빈 상태 (Empty State) */
+.empty-state-box {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f7f6fb;
+  border: 2px dashed #deddea;
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-main {
+  background-color: #5b50c8;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-sub {
+  background-color: #e0e1ec;
+  color: #292a31;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 시각적 숨김 접근성 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* 모바일 반응형 (768px 이하) */
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .food-card-grid {
+    grid-template-columns: 1fr;
+  }
+}

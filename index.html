@@ -208,6 +208,68 @@
                 </div>
             </div>
         </section>
+
+        <!-- 중간고사 실시간 냉장고 현황판 섹션 -->
+        <section id="dashboardSection" class="dashboard-section">
+        <div class="dashboard-header">
+            <h2>실시간 나의 냉장고 현황판</h2>
+            <p class="dashboard-subtitle">보관 중인 식재료와 소비 기한을 한눈에 관리하세요.</p>
+        </div>
+
+        <!-- 1. 통계 카운터 영역 -->
+        <div class="stat-grid">
+            <div class="stat-card">
+            <span class="stat-label">전체 식재료</span>
+            <strong id="statTotal" class="stat-count">0</strong>
+            </div>
+            <div class="stat-card is-storing">
+            <span class="stat-label">보관 중</span>
+            <strong id="statStoring" class="stat-count">0</strong>
+            </div>
+            <div class="stat-card is-impending">
+            <span class="stat-label">유통기한 임박(D-3)</span>
+            <strong id="statImpending" class="stat-count">0</strong>
+            </div>
+            <div class="stat-card is-consumed">
+            <span class="stat-label">소비 완료</span>
+            <strong id="statConsumed" class="stat-count">0</strong>
+            </div>
+        </div>
+
+        <!-- 2. 필터 툴바 (검색, 탭, 보관장소 셀렉트) -->
+        <div class="filter-toolbar">
+            <div class="search-box">
+            <input type="search" id="foodSearchInput" placeholder="식재료 검색..." />
+            </div>
+
+            <div class="dash-tabs" role="tablist">
+            <button type="button" class="dash-tab is-active" data-status="all">전체</button>
+            <button type="button" class="dash-tab" data-status="storing">보관 중</button>
+            <button type="button" class="dash-tab" data-status="impending">임박</button>
+            <button type="button" class="dash-tab" data-status="consumed">소비 완료</button>
+            </div>
+
+            <div class="storage-select-box">
+            <select id="storageFilter">
+                <option value="all">전체 보관장소</option>
+                <option value="냉장">냉장 보관</option>
+                <option value="냉동">냉동 보관</option>
+                <option value="실온">실온 보관</option>
+            </select>
+            </div>
+        </div>
+
+        <!-- 3. 식재료 카드가 꽂히는 실제 공간 (★ 가장 중요: 이게 없으면 카드가 안 뜸) -->
+        <div id="foodListContainer" class="food-card-grid"></div>
+
+        <!-- 4. 검색/필터 결과가 없을 때 빈 화면 피드백 -->
+        <div id="emptyState" class="empty-state" hidden>
+            <p id="emptyStateMsg" class="empty-msg">조회된 식재료가 없습니다.</p>
+            <div class="empty-actions">
+            <button type="button" id="btnResetFilter" class="btn-sub">필터 초기화</button>
+            </div>
+        </div>
+        </section>
     </main>
 
     <footer class="footer">
