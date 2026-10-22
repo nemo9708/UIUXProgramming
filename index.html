@@ -118,6 +118,96 @@
                 <button type="submit" class="btn btn-primary">보관함에 저장</button>
             </form>
         </section>
+
+        <!-- 7주차 식재료 등록 단계별 이용 흐름 섹션 -->
+        <section id="flow-section" class="content-section">
+            <h2>식재료 간편 등록 흐름</h2>
+
+            <!-- 단계 표시기 (Progress Indicator) -->
+            <ol class="step-indicator" aria-label="등록 단계 진행률">
+                <li id="step-indicator-1" class="is-active">1. 기본 정보</li>
+                <li id="step-indicator-2">2. 보관 및 기한</li>
+                <li id="step-indicator-3">3. 최종 확인</li>
+                <li id="step-indicator-4">4. 등록 완료</li>
+            </ol>
+
+            <!-- 1단계: 기본 정보 입력 -->
+            <div id="step-panel-1" class="step-panel is-active">
+                <h3>1단계: 식재료 정보 입력</h3>
+                <div class="form-group">
+                    <label for="stepFoodName">식재료 이름 <span class="required">*</span></label>
+                    <input type="text" id="stepFoodName" placeholder="예: 무농약 두부, 계란">
+                </div>
+                <div class="form-group">
+                    <label for="stepFoodCategory">카테고리 선택 <span class="required">*</span></label>
+                    <select id="stepFoodCategory">
+                        <option value="">-- 카테고리를 선택하세요 --</option>
+                        <option value="채소/과일">채소/과일</option>
+                        <option value="육류/수산">육류/수산</option>
+                        <option value="유제품/계란">유제품/계란</option>
+                        <option value="가공/기타">가공/기타</option>
+                    </select>
+                </div>
+                <p id="step1Error" class="error-msg" aria-live="polite" hidden></p>
+                <div class="step-buttons">
+                    <button type="button" class="btn-next" data-next="2">다음 단계로</button>
+                </div>
+            </div>
+
+            <!-- 2단계: 보관 장소 및 유통기한 입력 -->
+            <div id="step-panel-2" class="step-panel" hidden>
+                <h3>2단계: 보관 장소 및 유통기한 설정</h3>
+                <div class="form-group">
+                    <label for="stepStorage">보관 장소 <span class="required">*</span></label>
+                    <select id="stepStorage">
+                        <option value="">-- 보관 장소를 선택하세요 --</option>
+                        <option value="냉장">냉장 보관</option>
+                        <option value="냉동">냉동 보관</option>
+                        <option value="실온">실온 보관</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stepExpireDate">유통기한 (소비기한) <span class="required">*</span></label>
+                    <input type="date" id="stepExpireDate">
+                </div>
+                <p id="step2Error" class="error-msg" aria-live="polite" hidden></p>
+                <div class="step-buttons">
+                    <button type="button" class="btn-prev" data-prev="1">이전 단계</button>
+                    <button type="button" class="btn-next" data-next="3">다음 단계로</button>
+                </div>
+            </div>
+
+            <!-- 3단계: 최종 확인 -->
+            <div id="step-panel-3" class="step-panel" hidden>
+                <h3>3단계: 입력 내용 최종 확인</h3>
+                <div class="summary-box">
+                    <p><strong>식재료명:</strong> <span id="summaryName">-</span></p>
+                    <p><strong>카테고리:</strong> <span id="summaryCategory">-</span></p>
+                    <p><strong>보관장소:</strong> <span id="summaryStorage">-</span></p>
+                    <p><strong>유통기한:</strong> <span id="summaryExpireDate">-</span></p>
+                </div>
+                <div class="form-group check-group">
+                    <label>
+                        <input type="checkbox" id="stepAlarmCheck" checked>
+                        유통기한 3일 전 이메일 알림을 받겠습니다.
+                    </label>
+                </div>
+                <div class="step-buttons">
+                    <button type="button" class="btn-prev" data-prev="2">이전 단계 (수정)</button>
+                    <button type="button" id="btnCompleteStep">최종 등록하기</button>
+                </div>
+            </div>
+
+            <!-- 4단계: 완료 화면 -->
+            <div id="step-panel-4" class="step-panel" hidden>
+                <div class="complete-box">
+                    <div class="complete-icon">🎉</div>
+                    <h3>식재료 등록이 완료되었습니다!</h3>
+                    <p id="completeMessage">냉장고 목록에 정상적으로 추가되었습니다.</p>
+                    <button type="button" id="btnResetFlow">다른 식재료 추가 등록하기</button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">

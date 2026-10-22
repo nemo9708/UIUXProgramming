@@ -464,3 +464,161 @@ body.dark .status-message.is-ready {
         font-size: 1.5rem;
     }
 }
+
+/* ==========================================
+   7주차 Multi-step Task Flow 스타일
+   ========================================== */
+
+/* 단계 진행 표시바 */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    border-bottom: 2px solid #e0e1ec;
+}
+
+.step-indicator li {
+    flex: 1;
+    text-align: center;
+    padding: 10px 4px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #8a8d9b;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+
+.step-indicator li.is-active {
+    color: #5b50c8;
+    border-bottom-color: #5b50c8;
+}
+
+/* 스텝 패널 */
+.step-panel {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #deddea;
+}
+
+.step-panel[hidden] {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bfc1d1;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.required {
+    color: #e53935;
+}
+
+/* 에러 메시지 */
+.error-msg {
+    color: #d32f2f;
+    background-color: #fde8e8;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+/* 이전 / 다음 버튼 묶음 */
+.step-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.step-buttons button,
+#btnCompleteStep,
+#btnResetFlow {
+    padding: 12px 20px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.btn-next, #btnCompleteStep {
+    background-color: #5b50c8;
+    color: #ffffff;
+}
+
+.btn-prev {
+    background-color: #e0e1ec;
+    color: #292a31;
+}
+
+#btnResetFlow {
+    background-color: #245c3a;
+    color: #ffffff;
+    margin-top: 16px;
+}
+
+.summary-box {
+    background-color: #f7f6fb;
+    padding: 16px 20px;
+    border-radius: 8px;
+    border: 1px solid #deddea;
+    margin-bottom: 16px;
+}
+
+.complete-box {
+    text-align: center;
+    padding: 32px 16px;
+}
+
+.complete-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+/* 모바일 미디어 쿼리 (768px 이하) */
+@media (max-width: 768px) {
+    .step-indicator {
+        flex-direction: column;
+        align-items: stretch;
+        border-bottom: none;
+    }
+
+    .step-indicator li {
+        text-align: left;
+        border-bottom: none;
+        border-left: 4px solid #e0e1ec;
+        padding-left: 12px;
+        margin-bottom: 4px;
+    }
+
+    .step-indicator li.is-active {
+        border-left-color: #5b50c8;
+    }
+
+    .step-buttons {
+        flex-direction: column;
+    }
+
+    .step-buttons button {
+        width: 100%;
+    }
+}
