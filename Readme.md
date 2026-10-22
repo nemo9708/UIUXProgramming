@@ -40,3 +40,8 @@
 - 정상 경로: 7주차 4단계 폼에서 식재료 등록 완료 시, 대시보드 상단 통계 수치가 증가하고 새 식재료 카드가 맨 앞에 즉시 생성됨을 확인했습니다.
 - 오류 및 예외 경로: 존재하지 않는 식재료명(예: "치킨") 검색 시 `emptyState` 박스가 노출되며, `[필터 초기화]` 클릭 시 모든 필터 조건과 화면 목록이 정상적으로 원상 복구됩니다.
 - 반응형 화면 (1100px, 768px, 390px): 개발자 도구 기기 모드에서 통계 바와 검색/필터 영역, 카드가 세로 1열로 유동 배치되어 가로 스크롤 없이 정상 작동함을 확인했습니다.
+
+# 중간시험 제출용 Git, 홈페이지 주소
+1. GitHub Repository URL : https://github.com/nemo9708/UIUXProgramming
+
+2. Published Website URL : https://nemo9708.github.io/UIUXProgramming/
