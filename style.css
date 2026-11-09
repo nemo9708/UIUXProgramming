@@ -861,3 +861,93 @@ body.dark .status-message.is-ready {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================
+   9주차 조건부 폼 및 실시간 검증 스타일
+   ========================================== */
+
+.section-desc {
+    color: #5e6272;
+    margin-bottom: 20px;
+}
+
+.help-text {
+    display: block;
+    font-size: 13px;
+    color: #717585;
+    margin-top: 4px;
+}
+
+.error-text {
+    display: block;
+    font-size: 13px;
+    color: #d32f2f;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+/* 입력창 에러 상태 스타일 */
+input.is-invalid,
+select.is-invalid {
+    border-color: #d32f2f !important;
+    background-color: #fde8e8;
+}
+
+/* 입력창 정상/성공 상태 스타일 */
+input.is-valid {
+    border-color: #245c3a !important;
+}
+
+/* 조건부 추가 영역 애니메이션 효과 */
+.conditional-group {
+    background-color: #f7f6fb;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #5b50c8;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.conditional-group[hidden] {
+    display: none;
+}
+
+/* 제출 버튼 및 처리 중 상태 */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #5b50c8;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-submit:disabled {
+    background-color: #a0a3b1;
+    cursor: not-allowed;
+}
+
+/* 결과 피드백 박스 */
+.result-feedback {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.result-feedback.is-success {
+    background-color: #e7f7ed;
+    color: #245c3a;
+    border: 1px solid #b7e4c7;
+}
+
+.result-feedback.is-error {
+    background-color: #fde8e8;
+    color: #d32f2f;
+    border: 1px solid #f8b4b4;
+}

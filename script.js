@@ -492,5 +492,184 @@ if (btnCompleteStep) {
   });
 }
 
+// ==========================================================================
+// 9주차 조건부 폼 구현 및 실시간 검증/제출 상태 관리
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", function () {
+    const customNotifyForm = document.querySelector("#customNotifyForm");
+    const notifyFoodName = document.querySelector("#notifyFoodName");
+    const foodNameError = document.querySelector("#foodNameError");
+    const notifyChannel = document.querySelector("#notifyChannel");
+    const conditionalWrapper = document.querySelector("#conditionalContactWrapper");
+    const contactLabel = document.querySelector("#contactLabel");
+    const contactInput = document.querySelector("#contactInput");
+    const contactError = document.querySelector("#contactError");
+    const btnSubmitNotify = document.querySelector("#btnSubmitNotify");
+    const formResultFeedback = document.querySelector("#formResultFeedback");
+
+    if (!customNotifyForm) return;
+
+    // ----------------------------------------------------------------------
+    // 1. 조건부 입력 영역 구현 (change 이벤트)
+    // ----------------------------------------------------------------------
+    notifyChannel.addEventListener("change", function () {
+        const channel = notifyChannel.value;
+
+        // 에러 상태 및 결과 피드백 초기화
+        clearError(contactInput, contactError);
+        formResultFeedback.hidden = true;
+
+        if (channel === "none") {
+            // 알림 안 함: 추가 입력창 숨김 및 disabled 처리
+            conditionalWrapper.hidden = true;
+            contactInput.disabled = true;
+            contactInput.value = "";
+            contactInput.removeAttribute("required");
+        } else if (channel === "email") {
+            // 이메일: 입력창 표시, 라벨/플레이스홀더 변경, disabled 해제
+            conditionalWrapper.hidden = false;
+            contactInput.disabled = false;
+            contactLabel.innerHTML = '이메일 주소 <span class="required">*</span>';
+            contactInput.placeholder = "example@email.com";
+            contactInput.setAttribute("required", "true");
+            contactInput.focus();
+        } else if (channel === "sms") {
+            // SMS: 입력창 표시, 라벨/플레이스홀더 변경, disabled 해제
+            conditionalWrapper.hidden = false;
+            contactInput.disabled = false;
+            contactLabel.innerHTML = '휴대폰 번호 <span class="required">*</span>';
+            contactInput.placeholder = "010-1234-5678 (숫자만 또는 하이픈 포함)";
+            contactInput.setAttribute("required", "true");
+            contactInput.focus();
+        }
+    });
+
+    // ----------------------------------------------------------------------
+    // 2. 실시간 입력 검증 (input 이벤트 - 작성 중 피드백 및 에러 해제)
+    // ----------------------------------------------------------------------
+    notifyFoodName.addEventListener("input", function () {
+        validateFoodName();
+    });
+
+    contactInput.addEventListener("input", function () {
+        validateContact();
+    });
+
+    // 식재료 이름 검증 함수
+    function validateFoodName() {
+        const val = notifyFoodName.value.trim();
+        if (val.length < 2) {
+            showError(notifyFoodName, foodNameError, "식재료 이름을 2자 이상 입력해 주세요.");
+            return false;
+        } else {
+            clearError(notifyFoodName, foodNameError);
+            return true;
+        }
+    }
+
+    // 연락처 검증 함수 (채널별 양식 검사)
+    function validateContact() {
+        if (contactInput.disabled) return true; // 비활성화 상태면 검사 통과
+
+        const channel = notifyChannel.value;
+        const val = contactInput.value.trim();
+
+        if (val === "") {
+            showError(contactInput, contactError, "연락처 정보를 입력해 주세요.");
+            return false;
+        }
+
+        if (channel === "email") {
+            // 이메일 정규식 검사
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(val)) {
+                showError(contactInput, contactError, "올바른 이메일 형식이 아닙니다 (예: name@domain.com).");
+                return false;
+            }
+        } else if (channel === "sms") {
+            // 전화번호 검사 (8자 이상 숫자/하이픈)
+            const phoneRegex = /^[0-9-]{9,13}$/;
+            if (!phoneRegex.test(val)) {
+                showError(contactInput, contactError, "올바른 휴대폰 번호 형식이 아닙니다 (예: 01012345678).");
+                return false;
+            }
+        }
+
+        clearError(contactInput, contactError);
+        return true;
+    }
+
+    // 에러 표시 공통 함수
+    function showError(inputEl, errorEl, message) {
+        inputEl.classList.add("is-invalid");
+        inputEl.classList.remove("is-valid");
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+    }
+
+    // 에러 해제 공통 함수
+    function clearError(inputEl, errorEl) {
+        inputEl.classList.remove("is-invalid");
+        if (inputEl.value.trim() !== "") {
+            inputEl.classList.add("is-valid");
+        } else {
+            inputEl.classList.remove("is-valid");
+        }
+        errorEl.textContent = "";
+        errorEl.hidden = true;
+    }
+
+    // ----------------------------------------------------------------------
+    // 3. 제출 상태 처리 (submit 이벤트 & 중복 방지 피드백)
+    // ----------------------------------------------------------------------
+    customNotifyForm.addEventListener("submit", function (e) {
+        e.preventDefault(); // 기본 제출 동작 차단
+
+        // 전체 검증 실행
+        const isFoodValid = validateFoodName();
+        const isContactValid = validateContact();
+
+        // 조건 미충족 시 제출 차단 및 첫 에러 요소로 포커스
+        if (!isFoodValid || !isContactValid) {
+            formResultFeedback.className = "result-feedback is-error";
+            formResultFeedback.textContent = "입력한 항목에 오류가 있습니다. 수정 후 다시 시도해 주세요.";
+            formResultFeedback.hidden = false;
+
+            if (!isFoodValid) {
+                notifyFoodName.focus();
+            } else if (!isContactValid) {
+                contactInput.focus();
+            }
+            return;
+        }
+
+        // --- 제출 처리 중 상태 (중복 클릭 방지) ---
+        btnSubmitNotify.disabled = true;
+        btnSubmitNotify.textContent = "알림 정보 등록 중...";
+        formResultFeedback.hidden = true;
+
+        // 1.2초 후 성공 피드백 제공 (서버 전송 가상 시뮬레이션)
+        setTimeout(function () {
+            btnSubmitNotify.disabled = false;
+            btnSubmitNotify.textContent = "맞춤 알림 등록하기";
+            formResultFeedback.className = "result-feedback is-success";
+
+            const channelText = notifyChannel.value === "none" 
+                ? "앱 현황판 전용" 
+                : notifyChannel.options[notifyChannel.selectedIndex].text;
+
+            formResultFeedback.textContent = `🎉 '${notifyFoodName.value.trim()}'의 맞춤 알림(${channelText}) 설정이 성공적으로 등록되었습니다!`;
+            formResultFeedback.hidden = false;
+
+            // 폼 초기화 및 조건부 입력창 비활성화 복원
+            customNotifyForm.reset();
+            notifyFoodName.classList.remove("is-valid");
+            contactInput.classList.remove("is-valid");
+            conditionalWrapper.hidden = true;
+            contactInput.disabled = true;
+        }, 1200);
+    });
+});
+
 // 페이지 최초 로드 시 현황판 초기 렌더링
 renderFoodList();
