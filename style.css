@@ -115,6 +115,12 @@ body {
     color: #1a1a1a;
 }
 
+#about img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 /* 버튼 기본 스타일 */
 .btn {
     padding: 10px 18px;
@@ -950,4 +956,116 @@ input.is-valid {
     background-color: #fde8e8;
     color: #d32f2f;
     border: 1px solid #f8b4b4;
+}
+
+/* ==========================================
+   내비게이션 & 모바일 메뉴 스타일
+   ========================================== */
+
+/* 헤더 상단 레이아웃 */
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 1. 주요 메뉴 내비게이션 (데스크톱 기본) */
+.primary-nav {
+  margin-top: 20px;
+}
+
+.nav-list {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  display: block;
+  padding: 10px 16px;
+  color: #4b4860;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #5b50c8;
+  background-color: #ebe9ff;
+}
+
+/* 2. 현재 활성화된 메뉴 표시 */
+.nav-link.is-current,
+.nav-link[aria-current="page"] {
+  color: #5b50c8;
+  background-color: #ffffff;
+  border-color: #5b50c8;
+  box-shadow: 0 2px 6px rgba(91, 80, 200, 0.15);
+}
+
+/* 모바일 메뉴 토글 버튼 (데스크톱 숨김) */
+.menu-toggle-btn {
+  display: none;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #5b50c8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 3. 목록 필터 결과 수 텍스트 */
+.result-count-text {
+  margin: 12px 0 16px;
+  font-size: 14px;
+  color: #5e6272;
+}
+
+.result-count-text strong {
+  color: #5b50c8;
+  font-weight: 700;
+}
+
+/* 4. 모바일 반응형 스타일 (768px 이하) */
+@media (max-width: 768px) {
+  .menu-toggle-btn {
+    display: inline-block;
+  }
+
+  /* 모바일 기본 메뉴 숨김 */
+  .primary-nav {
+    display: none;
+    margin-top: 16px;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #deddea;
+    border-radius: 12px;
+  }
+
+  /* 메뉴 열림 상태 */
+  .primary-nav.is-open {
+    display: block;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px 14px;
+    background-color: #f7f6fb;
+  }
+
+  .nav-link.is-current {
+    background-color: #ebe9ff;
+  }
 }
