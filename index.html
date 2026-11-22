@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>신선한 냉장고 | 혼족을 위한 식재료 관리</title>
+    <title>서비스 소개 | 신선한 냉장고</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,27 +12,30 @@
     사용자: 식재료 유통기한을 자주 놓치고 버리는 1인가구 및 자취생
     목적: 냉장고 속 식재료 유통기한을 한눈에 파악하고 버리는 음식을 줄인다
     핵심 행동: 유통기한 임박 식재료를 확인하고 맞춤 레시피를 추천받은 뒤 알림을 신청한다
-    정보 순서: 소개 -> 주요 기능 -> 이용 방법 -> 알림 받기
+    정보 순서: 소개 -> 주요 기능 -> 이용 방법 -> 현황판 -> 간편 등록 -> 맞춤 알림
     -->
 
+    <!-- 11주차 접근성: 키보드 사용자를 위한 본문 바로가기 링크 -->
+    <a href="#mainContent" class="skip-link">본문 바로가기</a>
+
     <!-- ==========================================
-         헤더 및 내비게이션 영역 (10·11주차 개편)
+         헤더 및 내비게이션 영역
          ========================================== -->
-    <header>
+    <header class="site-header">
         <div class="header-inner">
             <div class="brand-group">
                 <h1>신선한 냉장고</h1>
-                <p>자취생 식재료 유통기한 관리와 남은 재료 맞춤 레시피</p>
+                <p class="header-desc">자취생 식재료 유통기한 관리와 남은 재료 맞춤 레시피</p>
             </div>
 
             <!-- 모바일 햄버거 메뉴 토글 버튼 (768px 이하에서 노출) -->
-            <button type="button" id="menuToggleBtn" class="menu-toggle-btn" 
+            <button type="button" id="menuToggleBtn" class="menu-toggle-btn"
                     aria-expanded="false" aria-controls="primaryNav" aria-label="메뉴 열기">
                 <span class="menu-btn-text">메뉴 열기</span>
             </button>
         </div>
 
-        <!-- 주 내비게이션 (script.js의 #primaryNav와 완벽 일치) -->
+        <!-- 주 내비게이션 -->
         <nav id="primaryNav" class="primary-nav" aria-label="주요 메뉴">
             <ul class="nav-list">
                 <li><a href="#about" class="nav-link is-current" aria-current="page">서비스 소개</a></li>
@@ -43,7 +46,7 @@
         </nav>
     </header>
 
-    <main>
+    <main id="mainContent" tabindex="-1">
         <!-- ==========================================
              1. 서비스 소개 영역
              ========================================== -->
@@ -55,28 +58,26 @@
         </section>
 
         <!-- ==========================================
-             2. 주요 기능 3개 동적 탭 UI (6주차)
+             2. 주요 기능 3개 동적 탭 UI
              ========================================== -->
         <section id="features" class="content-section">
             <h2>주요 기능</h2>
-            
-            <!-- 탭 버튼 목록 -->
-            <div class="tabs" role="tablist" aria-label="기능 선택">
-                <button id="tab-expire" class="tab is-active" type="button" role="tab" 
+
+            <div class="tabs" role="tablist" aria-label="주요 기능 선택">
+                <button id="tab-expire" class="tab is-active" type="button" role="tab"
                         aria-selected="true" aria-controls="panel-expire" data-target="#panel-expire">
                     유통기한 임박
                 </button>
-                <button id="tab-recipe" class="tab" type="button" role="tab" 
+                <button id="tab-recipe" class="tab" type="button" role="tab"
                         aria-selected="false" aria-controls="panel-recipe" data-target="#panel-recipe">
                     맞춤 레시피
                 </button>
-                <button id="tab-alarm" class="tab" type="button" role="tab" 
+                <button id="tab-alarm" class="tab" type="button" role="tab"
                         aria-selected="false" aria-controls="panel-alarm" data-target="#panel-alarm">
                     3일 전 알림
                 </button>
             </div>
 
-            <!-- 탭 패널 콘텐츠 3개 -->
             <div id="panel-expire" class="panel is-active" role="tabpanel" aria-labelledby="tab-expire">
                 <h3>유통기한 임박순 정렬</h3>
                 <p>빨리 먹어야 하는 식재료를 맨 위에 보여주어 낭비를 막아줍니다.</p>
@@ -92,44 +93,45 @@
         </section>
 
         <!-- ==========================================
-             3. 이벤트 실습 카드 (테마, 글자수, 동의)
+             3. 설정 및 간편 연습 카드
              ========================================== -->
         <section id="event-practice" class="content-section">
             <h2>설정 및 간편 연습</h2>
             <div class="event-grid">
-                <!-- click 이벤트: 다크 테마 토글 -->
+                <!-- 다크 테마 토글 -->
                 <article class="event-card">
                     <h3>화면 테마 설정</h3>
-                    <button id="themeButton" type="button">다크 테마로 바꾸기</button>
+                    <p class="desc">눈이 편한 밝기 모드로 화면을 전환합니다.</p>
+                    <button id="themeButton" class="btn" type="button" aria-pressed="false">다크 테마로 바꾸기</button>
                 </article>
 
-                <!-- input 이벤트: 식재료 글자수 계산 -->
+                <!-- 식재료 글자수 계산 (11주차: 반복 알림 방지를 위해 aria-live 제거, aria-describedby 연결) -->
                 <article class="event-card">
-                    <h3>식재료 quick 등록 연습</h3>
+                    <h3>식재료 간편 입력 연습</h3>
                     <label for="foodName">식재료 이름 (최대 10자)</label>
-                    <input type="text" id="foodName" maxlength="10" placeholder="예: 두부, 대파">
-                    <p id="foodNameCount" aria-live="polite">0 / 10 자</p>
+                    <input type="text" id="foodName" maxlength="10" placeholder="예: 두부, 대파" aria-describedby="foodNameCount">
+                    <p id="foodNameCount" class="counter-text">0 / 10 자</p>
                 </article>
 
-                <!-- change 이벤트: 알림 수신 동의 -->
+                <!-- 알림 수신 동의 -->
                 <article class="event-card">
                     <h3>알림 수신 동의</h3>
-                    <label class="agree-row">
+                    <label class="agree-row" for="agreeCheck">
                         <input type="checkbox" id="agreeCheck">
-                        유통기한 임박 식재료 알림 수신에 동의합니다.
+                        <span>유통기한 임박 식재료 알림 수신에 동의합니다.</span>
                     </label>
-                    <p id="agreeMessage" aria-live="polite">동의 후 알림 서비스를 이용할 수 있습니다.</p>
-                    <button id="startAlarmBtn" type="button" disabled>알림 서비스 시작하기</button>
+                    <p id="agreeMessage" class="status-message" role="status" aria-live="polite">동의 후 알림 서비스를 이용할 수 있습니다.</p>
+                    <button id="startAlarmBtn" class="btn btn-primary" type="button" disabled>알림 서비스 시작하기</button>
                 </article>
             </div>
         </section>
 
         <!-- ==========================================
-             4. 이용 방법 (3단계 순서 목록)
+             4. 이용 방법
              ========================================== -->
         <section id="steps" class="content-section">
             <h2>이용 방법</h2>
-            <ol>
+            <ol class="steps-list">
                 <li>구매한 식재료 이름과 유통기한을 등록합니다.</li>
                 <li>유통기한 임박 알림을 확인하고 추천 레시피를 고릅니다.</li>
                 <li>요리 후 사용한 식재료를 목록에서 소비 완료 처리합니다.</li>
@@ -137,13 +139,13 @@
         </section>
 
         <!-- ==========================================
-             5. 실시간 냉장고 현황판 섹션 (중간고사 신규 기능)
+             5. 실시간 냉장고 현황판 섹션
              ========================================== -->
         <section id="dashboardSection" class="content-section">
             <h2>실시간 나의 냉장고 현황판</h2>
 
             <!-- 실시간 요약 통계 바 -->
-            <div class="stats-bar">
+            <div class="stats-bar" aria-label="식재료 보관 통계">
                 <div class="stat-card">
                     <span class="stat-label">전체 식재료</span>
                     <strong id="statTotal">0</strong>
@@ -165,8 +167,8 @@
             <!-- 검색 및 보관장소 필터 컨트롤 -->
             <div class="filter-controls">
                 <div class="search-box">
-                    <label for="foodSearchInput" class="visually-hidden">식재료 검색</label>
-                    <input type="text" id="foodSearchInput" placeholder="보관 중인 식재료 검색 (예: 두부)">
+                    <label for="foodSearchInput" class="visually-hidden">식재료 이름 검색</label>
+                    <input type="search" id="foodSearchInput" placeholder="보관 중인 식재료 검색 (예: 두부)">
                 </div>
                 <div class="select-box">
                     <label for="storageFilter" class="visually-hidden">보관 장소 필터</label>
@@ -179,25 +181,23 @@
                 </div>
             </div>
 
-            <!-- 상태 필터 탭 -->
-            <div class="dash-tabs" role="tablist" aria-label="식재료 상태 필터">
-                <button type="button" class="dash-tab is-active" data-status="all">전체보기</button>
-                <button type="button" class="dash-tab" data-status="storing">보관 중</button>
-                <button type="button" class="dash-tab" data-status="impending">유통기한 임박</button>
-                <button type="button" class="dash-tab" data-status="consumed">소비 완료</button>
+            <!-- 상태 필터 버튼 그룹 (11주차: aria-pressed 초기값 명시) -->
+            <div class="dash-tabs" role="group" aria-label="식재료 상태 필터">
+                <button type="button" class="dash-tab is-active" data-status="all" aria-pressed="true">전체보기</button>
+                <button type="button" class="dash-tab" data-status="storing" aria-pressed="false">보관 중</button>
+                <button type="button" class="dash-tab" data-status="impending" aria-pressed="false">유통기한 임박</button>
+                <button type="button" class="dash-tab" data-status="consumed" aria-pressed="false">소비 완료</button>
             </div>
 
-            <!-- 10·11주차: 필터링 결과 수 실시간 안내 문구 -->
-            <p id="filterResultCount" class="result-count-text" aria-live="polite">
+            <!-- 필터링 결과 수 실시간 안내 문구 -->
+            <p id="filterResultCount" class="result-count-text" role="status" aria-live="polite">
                 전체 <strong>2</strong>개의 식재료가 있습니다.
             </p>
 
             <!-- 동적 식재료 카드 목록 -->
-            <div id="foodListContainer" class="food-card-grid">
-                <!-- script.js에 의해 동적으로 카드가 생성됩니다 -->
-            </div>
+            <div id="foodListContainer" class="food-card-grid"></div>
 
-            <!-- 빈 상태 안내 (Empty State) -->
+            <!-- 빈 상태 안내 -->
             <div id="emptyState" class="empty-state-box" hidden>
                 <p id="emptyStateMsg">조회된 식재료가 없습니다.</p>
                 <div class="empty-actions">
@@ -208,14 +208,14 @@
         </section>
 
         <!-- ==========================================
-             6. 4단계 식재료 간편 등록 흐름 (7주차 Task Flow)
+             6. 4단계 식재료 간편 등록 흐름
              ========================================== -->
         <section id="flowSection" class="content-section">
             <h2>식재료 간편 등록 흐름</h2>
 
             <!-- 진행 단계 표시기 -->
             <ol class="step-indicator" aria-label="등록 단계 진행률">
-                <li id="step-indicator-1" class="is-active">1. 기본 정보</li>
+                <li id="step-indicator-1" class="is-active" aria-current="step">1. 기본 정보</li>
                 <li id="step-indicator-2">2. 보관 및 기한</li>
                 <li id="step-indicator-3">3. 최종 확인</li>
                 <li id="step-indicator-4">4. 등록 완료</li>
@@ -223,14 +223,14 @@
 
             <!-- 1단계: 기본 정보 입력 -->
             <div id="step-panel-1" class="step-panel is-active">
-                <h3>1단계: 식재료 정보 입력</h3>
+                <h3 tabindex="-1">1단계: 식재료 정보 입력</h3>
                 <div class="form-group">
-                    <label for="stepFoodName">식재료 이름 <span class="required">*</span></label>
-                    <input type="text" id="stepFoodName" placeholder="예: 무농약 두부, 계란">
+                    <label for="stepFoodName">식재료 이름 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <input type="text" id="stepFoodName" placeholder="예: 무농약 두부, 계란" aria-describedby="step1Error" aria-invalid="false">
                 </div>
                 <div class="form-group">
-                    <label for="stepFoodCategory">카테고리 선택 <span class="required">*</span></label>
-                    <select id="stepFoodCategory">
+                    <label for="stepFoodCategory">카테고리 선택 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <select id="stepFoodCategory" aria-describedby="step1Error" aria-invalid="false">
                         <option value="">-- 카테고리를 선택하세요 --</option>
                         <option value="채소/과일">채소/과일</option>
                         <option value="육류/수산">육류/수산</option>
@@ -238,7 +238,7 @@
                         <option value="가공/기타">가공/기타</option>
                     </select>
                 </div>
-                <p id="step1Error" class="error-msg" aria-live="polite" hidden></p>
+                <p id="step1Error" class="error-msg" role="alert" hidden></p>
                 <div class="step-buttons">
                     <button type="button" class="btn-next" data-next="2">다음 단계로</button>
                 </div>
@@ -246,10 +246,10 @@
 
             <!-- 2단계: 보관 장소 및 유통기한 -->
             <div id="step-panel-2" class="step-panel" hidden>
-                <h3>2단계: 보관 장소 및 유통기한 설정</h3>
+                <h3 tabindex="-1">2단계: 보관 장소 및 유통기한 설정</h3>
                 <div class="form-group">
-                    <label for="stepStorage">보관 장소 <span class="required">*</span></label>
-                    <select id="stepStorage">
+                    <label for="stepStorage">보관 장소 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <select id="stepStorage" aria-describedby="step2Error" aria-invalid="false">
                         <option value="">-- 보관 장소를 선택하세요 --</option>
                         <option value="냉장">냉장 보관</option>
                         <option value="냉동">냉동 보관</option>
@@ -257,10 +257,10 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="stepExpireDate">유통기한 (소비기한) <span class="required">*</span></label>
-                    <input type="date" id="stepExpireDate">
+                    <label for="stepExpireDate">유통기한 (소비기한) <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <input type="date" id="stepExpireDate" aria-describedby="step2Error" aria-invalid="false">
                 </div>
-                <p id="step2Error" class="error-msg" aria-live="polite" hidden></p>
+                <p id="step2Error" class="error-msg" role="alert" hidden></p>
                 <div class="step-buttons">
                     <button type="button" class="btn-prev" data-prev="1">이전 단계</button>
                     <button type="button" class="btn-next" data-next="3">다음 단계로</button>
@@ -269,7 +269,7 @@
 
             <!-- 3단계: 최종 확인 -->
             <div id="step-panel-3" class="step-panel" hidden>
-                <h3>3단계: 입력 내용 최종 확인</h3>
+                <h3 tabindex="-1">3단계: 입력 내용 최종 확인</h3>
                 <div class="summary-box">
                     <p><strong>식재료명:</strong> <span id="summaryName">-</span></p>
                     <p><strong>카테고리:</strong> <span id="summaryCategory">-</span></p>
@@ -277,9 +277,9 @@
                     <p><strong>유통기한:</strong> <span id="summaryExpireDate">-</span></p>
                 </div>
                 <div class="form-group check-group">
-                    <label>
+                    <label class="agree-row" for="stepAlarmCheck">
                         <input type="checkbox" id="stepAlarmCheck" checked>
-                        유통기한 3일 전 이메일 알림을 받겠습니다.
+                        <span>유통기한 3일 전 이메일 알림을 받겠습니다.</span>
                     </label>
                 </div>
                 <div class="step-buttons">
@@ -291,33 +291,34 @@
             <!-- 4단계: 완료 안내 -->
             <div id="step-panel-4" class="step-panel" hidden>
                 <div class="complete-box">
-                    <div class="complete-icon">🎉</div>
-                    <h3>식재료 등록이 완료되었습니다!</h3>
-                    <p id="completeMessage">냉장고 목록에 정상적으로 추가되었습니다.</p>
+                    <div class="complete-icon" aria-hidden="true">🎉</div>
+                    <h3 tabindex="-1">식재료 등록이 완료되었습니다!</h3>
+                    <p id="completeMessage" role="status" aria-live="polite">냉장고 목록에 정상적으로 추가되었습니다.</p>
                     <button type="button" id="btnResetFlow">다른 식재료 추가 등록하기</button>
                 </div>
             </div>
         </section>
 
         <!-- ==========================================
-             7. 맞춤 알림 신청 및 조건부 폼 (9주차)
+             7. 맞춤 알림 신청 및 조건부 폼
              ========================================== -->
         <section id="customNotifySection" class="content-section">
             <h2>맞춤 식재료 보관 알림 신청</h2>
             <p class="section-desc">보관 방식과 원하시는 알림 채널에 맞춰 유통기한 정보를 보내드립니다.</p>
 
-            <form id="customNotifyForm" novalidate>
+            <form id="customNotifyForm" novalidate aria-busy="false">
                 <!-- 식재료 이름 -->
                 <div class="form-group">
-                    <label for="notifyFoodName">식재료 이름 <span class="required">*</span></label>
-                    <input type="text" id="notifyFoodName" name="notifyFoodName" placeholder="예: 무농약 아스파라거스" aria-describedby="foodNameHelp">
+                    <label for="notifyFoodName">식재료 이름 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <input type="text" id="notifyFoodName" name="notifyFoodName" placeholder="예: 무농약 아스파라거스"
+                           aria-describedby="foodNameHelp foodNameError" aria-invalid="false">
                     <small id="foodNameHelp" class="help-text">관리할 식재료 이름을 2자 이상 입력해 주세요.</small>
-                    <p id="foodNameError" class="error-text" aria-live="polite" hidden></p>
+                    <p id="foodNameError" class="error-text" role="alert" hidden></p>
                 </div>
 
                 <!-- 알림 채널 선택 (조건부 트리거) -->
                 <div class="form-group">
-                    <label for="notifyChannel">알림 수신 방식 <span class="required">*</span></label>
+                    <label for="notifyChannel">알림 수신 방식 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
                     <select id="notifyChannel" name="notifyChannel" aria-describedby="channelHelp">
                         <option value="none">알림 안 함 (앱 내 현황판만 확인)</option>
                         <option value="email">이메일 알림 받기</option>
@@ -328,10 +329,11 @@
 
                 <!-- 조건부 연락처 입력창 -->
                 <div id="conditionalContactWrapper" class="form-group conditional-group" hidden>
-                    <label id="contactLabel" for="contactInput">연락처 정보 <span class="required">*</span></label>
-                    <input type="text" id="contactInput" name="contactInput" placeholder="선택한 수단에 맞는 연락처를 입력하세요" disabled aria-describedby="contactHelp">
+                    <label id="contactLabel" for="contactInput">연락처 정보 <span class="required" aria-hidden="true">*</span><span class="visually-hidden">(필수)</span></label>
+                    <input type="text" id="contactInput" name="contactInput" placeholder="선택한 수단에 맞는 연락처를 입력하세요"
+                           disabled aria-describedby="contactHelp contactError" aria-invalid="false">
                     <small id="contactHelp" class="help-text">알림을 수신할 정확한 정보를 입력해 주세요.</small>
-                    <p id="contactError" class="error-text" aria-live="polite" hidden></p>
+                    <p id="contactError" class="error-text" role="alert" hidden></p>
                 </div>
 
                 <div class="form-actions">
@@ -339,29 +341,31 @@
                 </div>
 
                 <!-- 제출 결과 피드백 -->
-                <div id="formResultFeedback" class="result-feedback" aria-live="polite" hidden></div>
+                <div id="formResultFeedback" class="result-feedback" role="status" aria-live="polite" hidden></div>
             </form>
         </section>
 
         <!-- ==========================================
-             8. 하단 기본 이메일 구독 폼 (5주차 원본 유지)
+             8. 하단 기본 이메일 구독 폼
              ========================================== -->
         <section id="subscribe" class="content-section">
             <h2>식재료 관리 소식 및 정기 알림 받기</h2>
-            <form id="subscribe-form">
-                <label for="email">이메일 주소</label>
-                <input type="email" id="email" name="email" placeholder="example@email.com">
-                <button type="submit" id="subscribeButton">유통기한 알림 신청하기</button>
+            <form id="subscribe-form" class="subscribe-form" novalidate>
+                <div class="form-group subscribe-field">
+                    <label for="email">이메일 주소</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com"
+                           aria-describedby="subscribeMessage" aria-invalid="false">
+                </div>
+                <button type="submit" id="subscribeButton" class="btn btn-primary">유통기한 알림 신청하기</button>
             </form>
-            <p id="subscribeMessage" aria-live="polite">이메일을 입력한 뒤 신청해 주세요.</p>
+            <p id="subscribeMessage" class="status-message" role="status" aria-live="polite">이메일을 입력한 뒤 신청해 주세요.</p>
         </section>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <p>© 2026 신선한 냉장고. All rights reserved.</p>
     </footer>
 
-    <!-- 자바스크립트 연결 -->
     <script src="script.js"></script>
 </body>
 </html>
