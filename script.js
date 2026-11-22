@@ -235,6 +235,53 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // 12주차 핵심: 데이터 한 건으로 카드 한 장을 만드는 재사용 함수
+  function createFoodCard(item) {
+    const dDay = calculateDDay(item.expireDate);
+    const isConsumed = (item.status === "consumed");
+    let ddayClass = "safe";
+    let ddayText = `D-${dDay} (여유)`;
+
+    if (isConsumed) {
+      ddayClass = "done";
+      ddayText = "✓ 소비 완료";
+    } else if (dDay < 0) {
+      ddayClass = "danger";
+      ddayText = `⚠ 기한 만료 (D+${Math.abs(dDay)})`;
+    } else if (dDay <= 3) {
+      ddayClass = "danger";
+      ddayText = dDay === 0 ? "⚠ D-Day (오늘까지)" : `⚠ D-${dDay} (임박)`;
+    } else if (dDay <= 7) {
+      ddayClass = "warning";
+      ddayText = `D-${dDay} (주의)`;
+    }
+
+    const card = document.createElement("article");
+    card.className = `food-item-card ${isConsumed ? "is-consumed" : ""}`;
+    card.innerHTML = `
+      <div class="food-card-header">
+        <h3 class="food-card-title">${item.name}</h3>
+        <span class="dday-badge ${ddayClass}">${ddayText}</span>
+      </div>
+      <div class="food-card-body">
+        <p><strong>카테고리:</strong> ${item.category}</p>
+        <p><strong>보관 장소:</strong> ${item.storage}</p>
+        <p><strong>유통기한:</strong> ${item.expireDate}</p>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn-recipe-open" data-id="${item.id}"
+                aria-label="${item.name} 맞춤 레시피 보기">
+          추천 레시피
+        </button>
+        <button type="button" class="btn-consume-toggle" data-id="${item.id}"
+                aria-label="${item.name} ${isConsumed ? "보관 중으로 되돌리기" : "소비 완료 처리하기"}">
+          ${isConsumed ? "되돌리기" : "소비 완료"}
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
   function renderFoodList() {
     if (!foodListContainer) return;
     updateStats();
@@ -276,44 +323,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (emptyState) emptyState.hidden = true;
 
+    // 분리한 카드 함수를 호출해 목록에 추가
     filtered.forEach(item => {
-      const dDay = calculateDDay(item.expireDate);
-      const isConsumed = (item.status === "consumed");
-      let ddayClass = "safe";
-      let ddayText = `D-${dDay} (여유)`;
-
-      if (isConsumed) {
-        ddayClass = "done";
-        ddayText = "✓ 소비 완료";
-      } else if (dDay < 0) {
-        ddayClass = "danger";
-        ddayText = `⚠ 기한 만료 (D+${Math.abs(dDay)})`;
-      } else if (dDay <= 3) {
-        ddayClass = "danger";
-        ddayText = dDay === 0 ? "⚠ D-Day (오늘까지)" : `⚠ D-${dDay} (임박)`;
-      } else if (dDay <= 7) {
-        ddayClass = "warning";
-        ddayText = `D-${dDay} (주의)`;
-      }
-
-      const card = document.createElement("article");
-      card.className = `food-item-card ${isConsumed ? "is-consumed" : ""}`;
-      card.innerHTML = `
-        <div class="food-card-header">
-          <h3 class="food-card-title">${item.name}</h3>
-          <span class="dday-badge ${ddayClass}">${ddayText}</span>
-        </div>
-        <div class="food-card-body">
-          <p><strong>카테고리:</strong> ${item.category}</p>
-          <p><strong>보관 장소:</strong> ${item.storage}</p>
-          <p><strong>유통기한:</strong> ${item.expireDate}</p>
-        </div>
-        <button type="button" class="btn-consume-toggle" data-id="${item.id}"
-                aria-label="${item.name} ${isConsumed ? "보관 중으로 되돌리기" : "소비 완료 처리하기"}">
-          ${isConsumed ? "보관 중으로 되돌리기" : "소비 완료 처리"}
-        </button>
-      `;
-      foodListContainer.appendChild(card);
+      foodListContainer.appendChild(createFoodCard(item));
     });
   }
 
@@ -348,6 +360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (foodListContainer) {
     foodListContainer.addEventListener("click", function (e) {
+      // 1) 소비 완료 / 되돌리기 버튼 클릭 시
       if (e.target.classList.contains("btn-consume-toggle")) {
         const id = parseInt(e.target.dataset.id, 10);
         const targetItem = foodList.find(item => item.id === id);
@@ -357,6 +370,16 @@ document.addEventListener("DOMContentLoaded", function () {
           // 상태 변경 후 현재 선택된 필터 탭으로 초점을 안전하게 유지
           const selectedFilter = document.querySelector('.dash-tab[aria-pressed="true"]');
           if (selectedFilter) selectedFilter.focus();
+        }
+        return;
+      }
+
+      // 2) [12주차 추가] 추천 레시피 버튼 클릭 시 모달 열기
+      if (e.target.classList.contains("btn-recipe-open")) {
+        const id = parseInt(e.target.dataset.id, 10);
+        const targetItem = foodList.find(item => item.id === id);
+        if (targetItem) {
+          openRecipeModal(targetItem, e.target);
         }
       }
     });
@@ -778,6 +801,78 @@ document.addEventListener("DOMContentLoaded", function () {
       subscribeButton.disabled = true;
     });
   }
+
+  // ======================================================================
+  // 8. 12주차 재사용 컴포넌트: 아코디언(Accordion) & 레시피 모달(Modal)
+  // ======================================================================
+  // (1) 아코디언 공통 초기화 함수
+  function initAccordions() {
+    const triggers = document.querySelectorAll(".accordion-trigger");
+    triggers.forEach(trigger => {
+      trigger.addEventListener("click", function () {
+        const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+        const panelId = trigger.getAttribute("aria-controls");
+        const panel = document.getElementById(panelId);
+        const icon = trigger.querySelector(".accordion-icon");
+
+        trigger.setAttribute("aria-expanded", String(!isExpanded));
+        if (panel) panel.hidden = isExpanded;
+        if (icon) icon.textContent = isExpanded ? "+" : "−";
+      });
+    });
+  }
+  initAccordions();
+
+  // (2) 맞춤 레시피 모달 제어
+  const recipeModal = document.querySelector("#recipeModal");
+  const recipeModalTitle = document.querySelector("#recipeModalTitle");
+  const recipeModalSubtitle = document.querySelector("#recipeModalSubtitle");
+  const recipeModalContent = document.querySelector("#recipeModalContent");
+  const btnCloseModal = document.querySelector("#btnCloseModal");
+  const btnConfirmModal = document.querySelector("#btnConfirmModal");
+  let lastFocusedTrigger = null;
+
+  const recipeMap = {
+    "유제품/계란": "간장 두부조림 또는 계란말이 — 팬에 기름을 두르고 노릇하게 구워 간장 양념을 곁들이면 10분 만에 완성됩니다.",
+    "육류/수산": "대파 삼겹살 덮밥 — 고기를 바싹 구운 뒤 대파와 간장·설탕 소스를 졸여 밥 위에 올려 드세요.",
+    "채소/과일": "초간단 채소 볶음밥 — 남은 채소를 잘게 썰어 밥·굴소스와 함께 센 불에 3분만 볶아내면 됩니다.",
+    "가공/기타": "원팬 크림/토마토 파스타 — 냉장고 속 자투리 재료와 면을 한 팬에 끓여 간편하게 한 끼를 해결하세요."
+  };
+
+  function openRecipeModal(item, triggerEl) {
+    if (!recipeModal) return;
+    lastFocusedTrigger = triggerEl;
+    const tip = recipeMap[item.category] || "남은 재료를 모아 볶음밥이나 국물 요리로 활용해 보세요.";
+
+    if (recipeModalTitle) recipeModalTitle.textContent = `'${item.name}' 맞춤 레시피`;
+    if (recipeModalSubtitle) recipeModalSubtitle.textContent = `카테고리: ${item.category} · 보관: ${item.storage}`;
+    if (recipeModalContent) recipeModalContent.textContent = tip;
+
+    recipeModal.hidden = false;
+    if (btnCloseModal) btnCloseModal.focus();
+  }
+
+  function closeRecipeModal() {
+    if (!recipeModal || recipeModal.hidden) return;
+    recipeModal.hidden = true;
+    if (lastFocusedTrigger) {
+      lastFocusedTrigger.focus();
+      lastFocusedTrigger = null;
+    }
+  }
+
+  if (btnCloseModal) btnCloseModal.addEventListener("click", closeRecipeModal);
+  if (btnConfirmModal) btnConfirmModal.addEventListener("click", closeRecipeModal);
+  if (recipeModal) {
+    recipeModal.addEventListener("click", function (e) {
+      if (e.target === recipeModal) closeRecipeModal();
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && recipeModal && !recipeModal.hidden) {
+      closeRecipeModal();
+    }
+  });
 
   renderFoodList();
 });

@@ -908,9 +908,6 @@ body.dark select[aria-invalid="true"] {
    반응형 미디어 쿼리 (768px 이하)
    ========================================== */
 @media (max-width: 768px) {
-    .menu-toggle-btn {
-        display: inline-block;
-    }
 
     .primary-nav {
         display: none;
@@ -970,4 +967,177 @@ body.dark select[aria-invalid="true"] {
     .food-card-grid {
         grid-template-columns: 1fr;
     }
+
+    .menu-toggle-btn {
+        display: inline-block;
+    }
 }
+
+    /* ==========================================
+    12주차 UI 컴포넌트: 아코디언, 모달, 카드 버튼 그룹
+    ========================================== */
+
+    /* 카드 하단 버튼 묶음 (공통 규칙) */
+    .card-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .card-actions .btn-consume-toggle,
+    .card-actions .btn-recipe-open {
+        flex: 1;
+        margin-top: 0;
+        padding: 9px 10px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-recipe-open {
+        background-color: var(--accent-green);
+        border: 2px solid var(--accent-green);
+        color: #ffffff;
+    }
+
+    .btn-recipe-open:hover {
+        background-color: #164f2e;
+        border-color: #164f2e;
+    }
+
+    /* 아코디언 컴포넌트 */
+    .accordion {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .accordion-item {
+        border: 1px solid var(--border-line);
+        border-radius: 10px;
+        background-color: var(--bg-subtle);
+        overflow: hidden;
+    }
+
+    .accordion-item h3 {
+        margin: 0;
+    }
+
+    .accordion-trigger {
+        width: 100%;
+        padding: 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .accordion-trigger:hover {
+        background-color: #ebe9ff;
+    }
+
+    .accordion-trigger[aria-expanded="true"] {
+        color: var(--primary);
+        border-bottom: 1px solid var(--border-line);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    .accordion-icon {
+        font-size: 1.25rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .accordion-panel {
+        padding: 16px 18px;
+        background-color: var(--bg-surface);
+        color: var(--text-muted);
+        line-height: 1.65;
+    }
+
+    .accordion-panel[hidden] {
+        display: none;
+    }
+
+    /* 모달 컴포넌트 */
+    .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background-color: rgba(15, 18, 28, 0.65);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-backdrop[hidden] {
+        display: none;
+    }
+
+    .modal-dialog {
+        width: 100%;
+        max-width: 480px;
+        background-color: var(--bg-surface);
+        color: var(--text-main);
+        border: 2px solid var(--primary);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+
+    .modal-subtitle {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 12px;
+    }
+
+    .modal-recipe-box {
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-line);
+        border-radius: 10px;
+        padding: 16px;
+        color: var(--text-main);
+        line-height: 1.6;
+    }
+
+    .modal-footer {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* 다크 모드 대응 */
+    body.dark .accordion-trigger:hover {
+        background-color: #2f2c4d;
+        color: #ffffff;
+    }
+
+    body.dark .btn-recipe-open {
+        color: #14151a;
+    }
